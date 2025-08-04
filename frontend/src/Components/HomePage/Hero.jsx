@@ -1,5 +1,8 @@
+import { useSelector } from "react-redux"
 
 const Hero = () => {
+
+
     return (
         <>
             <div className="">
@@ -20,6 +23,7 @@ const Hero = () => {
                             <button className="mt-4 px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
                                 Order Now
                             </button>
+                          
                         </div>
 
                         <div className="mt-6 md:mt-0 md:ml-10">

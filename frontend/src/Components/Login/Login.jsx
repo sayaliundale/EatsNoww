@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { setUser } from "../Features/UserSlice";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -17,12 +21,15 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/login",
+      const res = await axios.post("http://localhost:3000/login",
         formData,
         {
           withCredentials: true
         }
       );
+      
+      dispatch(setUser(res.data.user));
+      console.log("Login response:", res.data)
       navigate("/")
       alert("Login successful!");
     }

@@ -9,4 +9,19 @@ const restaurant = async (req, res) => {
     }
 };
 
-module.exports = restaurant;
+const oneRestaurant = async (req, res) => {
+    const id = Number(req.params.id);
+    try {
+        const restaurant = await Restaurant.findOne({ res_id: id });
+
+        if (!restaurant) {
+            return res.status(404).json({ error: "Restaurant not found" });
+        }
+
+        res.json(restaurant);
+    } catch (err) {
+        res.status(500).send("Error occurred while fetching menu");
+    }
+}
+
+module.exports = {restaurant, oneRestaurant};

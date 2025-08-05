@@ -9,15 +9,13 @@ const Counter = ({ id, itemData, userId }) => {
   const item = useSelector((state) => state.counter.value[id]);
   const count = item?.quantity || 0;
 
-  // sync with backend on quantity change
   useEffect(() => {
-    if (!userId || count < 0) return;
+    const delayDebounce = setTimeout(() => {
+      if (!userId || count < 0) return;
 
-    const syncCart = async () => {
-      try {
-        await axios.post(
-          "http://localhost:3000/cartUpdate",
-          {
+      const syncCart = async () => {
+        try {
+          await axios.post("http://localhost:3000/cartUpdate", {
             item: {
               id,
               name: itemData.name,
@@ -25,16 +23,18 @@ const Counter = ({ id, itemData, userId }) => {
               img: itemData.img,
               quantity: count,
             },
-          },
-          { withCredentials: true }
-        );
-      } catch (err) {
-        console.error("Cart sync failed:", err);
-      }
-    };
+          }, { withCredentials: true });
+        } catch (err) {
+          console.error("Cart sync failed:", err);
+        }
+      };
 
-    syncCart();
+      syncCart();
+    }, 500); 
+
+    return () => clearTimeout(delayDebounce);
   }, [count]);
+
 
   return (
     <div className="flex items-center justify-evenly">

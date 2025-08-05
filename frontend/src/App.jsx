@@ -7,14 +7,31 @@ import ProtectedRoutes from "./utils/ProtectedRoutes"
 import LayoutWithNav from "./utils/LayoutWithNav"
 import RestaurantMenu from "./Components/Restaurants/RestaurantMenu"
 import Cart from "./Components/HomePage/Cart"
-// import { useDispatch } from "react-redux";
-// import { setUser } from "./Components/Features/UserSlice";
-// import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setInitialCart } from "./Components/Features/CounterSlice";
+import { useEffect } from "react";
+import axios from "axios"
 
 function App() {
-  //const dispatch = useDispatch();
 
- 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/getCart", {
+          withCredentials: true,
+        });
+        const cartItems = res.data.cart || [];
+
+        dispatch(setInitialCart(cartItems)); 
+      } catch (err) {
+        console.error("Error loading cart:", err);
+      }
+    };
+
+    fetchCart();
+  }, []);
 
   return (
     <>

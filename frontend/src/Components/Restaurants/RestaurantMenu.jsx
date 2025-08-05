@@ -5,6 +5,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setQuantity } from "../Features/CounterSlice";
 
+
 const RestaurantMenu = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
@@ -57,15 +58,14 @@ const RestaurantMenu = () => {
             }
         };
     
-        // Call only when menu is loaded
         if (menu.length > 0) fetchCart();
     }, [menu]);
     
-
     const { name, del_time, rating, cusines, veg } = restaurtInfo;
 
     return (
         <>
+       
             <div className="flex flex-col items-center ">
                 <div className="w-[55%] mt-[5%]">
                     <p className="text-3xl font-bold">{name}</p>

@@ -38,7 +38,6 @@ const login = async (req, res) => {
             { expiresIn: "1d" }
         )
         
-
         res.cookie("token", token, {
             httpOnly: true,
             secure: false,
@@ -55,7 +54,6 @@ const login = async (req, res) => {
     catch (err) {
         res.status(500).json({ error: 'Server error' });
     }
-
 }
 
 const getMyProfile = async (req, res) => {

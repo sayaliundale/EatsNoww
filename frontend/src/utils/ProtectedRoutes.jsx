@@ -13,7 +13,7 @@ const ProtectedRoutes = () => {
   }, []);
 
   if (isAuthenticated === null) {
-    return <div>Loading...</div>; // or a spinner
+    return <div>Loading...</div>; 
   }
 
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;

@@ -1,7 +1,4 @@
-import { useSelector } from "react-redux"
-
 const Hero = () => {
-
 
     return (
         <>

@@ -17,10 +17,7 @@ const users = new mongoose.Schema({
     },
     cart: [
         {
-            id: {
-                type: Number,
-                required: true
-            },
+            id: { type: String, required: true },
             name: String,
             img: String,
             price: Number,

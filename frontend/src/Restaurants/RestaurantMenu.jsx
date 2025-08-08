@@ -3,8 +3,6 @@ import MenuCard from "./MenuCard"
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setQuantity } from "../Features/CounterSlice";
-
 
 const RestaurantMenu = () => {
     const { id } = useParams();
@@ -40,18 +38,7 @@ const RestaurantMenu = () => {
                 if (Array.isArray(cartItems)) {
                     const allMenuItems = menu.flatMap(category => category.items);
     
-                    cartItems.forEach(([id, quantity]) => {
-                        const menuItem = allMenuItems.find(item => item.id == id);
-                        if (menuItem) {
-                            dispatch(setQuantity({
-                                id: menuItem.id,
-                                name: menuItem.name,
-                                price: menuItem.price,
-                                img: menuItem.img,
-                                quantity: quantity,
-                            }));
-                        }
-                    });
+                    
                 }
             } catch (error) {
                 console.error("Error fetching cart:", error.response?.data || error.message);
@@ -65,7 +52,6 @@ const RestaurantMenu = () => {
 
     return (
         <>
-       
             <div className="flex flex-col items-center ">
                 <div className="w-[55%] mt-[5%]">
                     <p className="text-3xl font-bold">{name}</p>

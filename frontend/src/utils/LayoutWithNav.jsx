@@ -1,4 +1,4 @@
-import Navbar from "../Components/HomePage/Navbar";
+import Navbar from "../Pages/Navbar";
 import { Outlet } from "react-router-dom";
 
 const LayoutWithNav = () => {

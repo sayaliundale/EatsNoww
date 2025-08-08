@@ -1,8 +1,11 @@
 const User = require("../models/user");
 
 const updateCart = async (req, res) => {
-    const userId = req.user?._id;
-    const { item } = req.body;
+    const userId = req.user._id;
+    console.log("userId - ", userId)
+    const { item, action } = req.body;
+
+    console.log(item);
 
     if (!item || !item.id) {
         return res.status(400).json({ error: "Item data is missing or invalid" });
@@ -17,19 +20,23 @@ const updateCart = async (req, res) => {
         );
 
         if (existingItem) {
-            existingItem.quantity = item.quantity;
-
-            if (existingItem.quantity <= 0) {
-                user.cart = user.cart.filter(
-                    (cartItem) => String(cartItem.id) !== String(item.id)
-                );
+            if (action === "increment") {
+                existingItem.quantity += 1;
             }
-        } else {
-            if (item.quantity > 0) {
-                user.cart.push(item);
+            else if (action === "decrement") {
+                if (existingItem.quantity > 1) {
+                    existingItem.quantity -= 1;
+                } else {
+                    user.cart = user.cart.filter(
+                        (cartItem) => String(cartItem.id) !== String(item.id)
+                    );
+                }
             }
         }
-
+        else {
+            user.cart.push({ ...item, quantity: 1 });
+        }
+        console.log("Existing ", existingItem);
         await user.save();
         return res
             .status(200)

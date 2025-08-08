@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import RestaurantCard from "./RestaurantCard";
 import { useNavigate } from "react-router-dom";
-import Filters from "./Filters";
+import Filters from "../Features/Filter/Filters";
 
 const Restaurants = () => {
 

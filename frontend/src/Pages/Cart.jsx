@@ -32,7 +32,7 @@ const Cart = () => {
       try {
         const res = await axios.get("http://localhost:3000/getCart", { withCredentials: true });
         if (!mounted) return;
-        // If backend returns array -> convert; if object, use as-is
+        
         if (Array.isArray(res.data.cart)) {
           dispatch(setCart(arrayToCartObject(res.data.cart)));
         } else if (res.data.cart && typeof res.data.cart === "object") {

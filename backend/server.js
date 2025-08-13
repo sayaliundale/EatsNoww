@@ -1,25 +1,46 @@
 require("dotenv").config();
 const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
+const { socketAuth } = require("./middlewares/socketAuth");
 const app = express();
+
 const cookieParser = require("cookie-parser");
 const cors = require("cors")
+const server = http.createServer(app);
 
-app.use(cors({
-    origin: "http://localhost:5173",
-    credentials: true
-}));
+const io = new Server(server,
+    { cors: { origin: "http://localhost:5173", credentials: true } });
 
+io.use(socketAuth);
+app.set('io', io);
 const userRouter = require("./routes/auth");
 const connect = require("./config/db");
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use("/", userRouter);
 connect();
 
+io.on("connection", (socket) => {
+    console.log("User connected:", socket.id);
+
+    socket.on("sendMessage", (data) => {
+        console.log("Message from client:", data);
+        io.emit("receiveMessage", data);
+    });
+
+    socket.on("joinOrdersRoom", (userId) => {
+        socket.join(userId);
+        console.log(`User ${socket.id} joined room for user ${userId}`);
+    });
+
+    socket.on("disconnect", () => {
+        console.log("User disconnected:", socket.id);
+    });
+});
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`---- \nServer started on port ${PORT}\n-----`));
+server.listen(PORT, () => console.log(`---- \nServer started on port ${PORT}\n-----`));

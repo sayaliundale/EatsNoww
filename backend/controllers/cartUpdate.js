@@ -36,7 +36,7 @@ const updateCart = async (req, res) => {
         else {
             user.cart.push({ ...item, quantity: 1 });
         }
-        console.log("Existing ", existingItem);
+        
         await user.save();
         return res
             .status(200)

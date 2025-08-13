@@ -1,10 +1,17 @@
+import { useNavigate } from "react-router-dom"
+
 const Hero = () => {
+    const navigate = useNavigate();
+
+    const handleClick = () =>{
+        navigate("/restaurants")
+    }
 
     return (
         <>
-            <div className="">
-                <div className="w-[94%] h-[75%] m-[3%] bg-amber-100 rounded-2xl">
-                    <div className="flex flex-wrap items-center justify-around px-12 py-16 gap-10 lg:gap-10">
+            <div className="flex justify-center">
+                <div className="w-[90%] h-[75%] m-[3%] bg-amber-100 rounded-2xl">
+                    <div className="flex flex-wrap items-center justify-center px-12 py-16 gap-8 lg:gap-8">
 
                         <div className="text-gray-800 max-w-xl space-y-4 font-extralight">
                             <p className="text-5xl lg:text-6xl tracking-tight">
@@ -17,7 +24,7 @@ const Hero = () => {
                                 Order now and conquer your cravings
                             </p>
 
-                            <button className="mt-4 px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
+                            <button className="mt-4 px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition" onClick ={handleClick}>
                                 Order Now
                             </button>
                           

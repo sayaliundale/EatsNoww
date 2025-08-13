@@ -9,7 +9,7 @@ const MenuCard = ({ data }) => {
         <div className="flex flex-col gap-6">
             {data?.itemcards?.map((item, index) => {
                 const card = item?.card;
-                const cartItem = cart[card?.id] || {}; // cart match by id
+                const cartItem = cart[card?.id] || {}; 
                 const mergedItem = {
                     ...card,
                     quantity: cartItem.quantity || 0

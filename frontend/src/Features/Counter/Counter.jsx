@@ -24,7 +24,7 @@ const Counter = ({ id, itemData }) => {
   const [loading, setLoading] = useState(false);
 
   const changeQty = async (actionType) => {
-    if (loading) return; // prevent rapid double clicks
+    if (loading) return; 
     setLoading(true);
     try {
       const payloadItem = {

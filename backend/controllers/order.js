@@ -7,19 +7,22 @@ const order = async (req, res) => {
     try {
         const newOrder = new orderSchema({
             name, userId, totalPrice, items, address, phone, status: 'Pending'
-        })
+        });
+
         await newOrder.save();
-        
+
         const io = req.app.get("io");
-        io.to(req.body.userId).emit("orderUpdate", newOrder);
-        
-        await User.findByIdAndUpdate(userId, { $set: { cart: [] } });
-        res.status(200).send("Order created!");
+        io.emit("newOrder", newOrder);
+        io.to(userId.toString()).emit("orderPlaced", newOrder);
+
+        await User.findByIdAndUpdate(userId,  { cart: [] });
+
+        res.status(200).json(newOrder); 
+    } catch (err) {
+        console.error(err);
+        res.status(400).send("Problem in order creation!");
     }
-    catch (err) {
-        res.status(400).send("Problem in order creation!")
-    }
-}
+};
 
 const getOrders = async (req, res) => {
     try {
@@ -55,7 +58,7 @@ const getOrder = async (req, res) => {
     const userId = req.params.id;
 
     try {
-        const orders = await orderSchema.find({ userId });
+        const orders = await orderSchema.find({ userId }).sort({ _id: -1 });
         res.json(orders);
     }
     catch (err) {

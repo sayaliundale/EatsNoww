@@ -33,7 +33,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("joinOrdersRoom", (userId) => {
-        socket.join(userId);
+        socket.join(userId.toString());
         console.log(`User ${socket.id} joined room for user ${userId}`);
     });
 
@@ -44,3 +44,5 @@ io.on("connection", (socket) => {
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => console.log(`---- \nServer started on port ${PORT}\n-----`));
+
+

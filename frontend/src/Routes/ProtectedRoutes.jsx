@@ -4,6 +4,7 @@ import axios from "axios";
 
 const ProtectedRoutes = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     axios
@@ -16,7 +17,11 @@ const ProtectedRoutes = () => {
     return <div>Loading...</div>; 
   }
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+  if (isAuthenticated && user.role==="user") {
+    return <Outlet />; 
+  } else {
+    return <Navigate to="/login" />; 
+  }
 };
 
 export default ProtectedRoutes;

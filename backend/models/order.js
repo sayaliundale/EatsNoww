@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const order = new mongoose.Schema({
-   userId :{
-        type : String
-   },
+    userId: {
+        type: String
+    },
     fullName: {
         type: String
     },
@@ -14,20 +14,24 @@ const order = new mongoose.Schema({
         type: Number
     },
     address: {
-       type :String
+        type: String
     },
-    phone :{
-        type : Number
+    phone: {
+        type: Number
     },
-    pincode:{
-        type : Number
+    pincode: {
+        type: Number
     },
     status: {
         type: String,
         default: 'Pending'
     },
-    city :{
+    city: {
         type: String
+    },
+    time: { 
+        type: Date, 
+        default: Date.now 
     }
 
 })

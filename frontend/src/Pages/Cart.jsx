@@ -3,6 +3,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "../Features/Counter/CounterSlice";
 import Counter from "../Features/Counter/Counter";
+import { addOrder } from "../Features/OrderSLice";
 
 const arrayToCartObject = (arr) => {
     const obj = {};
@@ -27,7 +28,6 @@ const Cart = () => {
     const cartObject = useSelector((state) => state.counter.value);
     const cartItems = useMemo(() => Object.entries(cartObject), [cartObject]);
 
-<<<<<<< HEAD
     const [fullName, setFullName] = useState("");
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("");
@@ -85,30 +85,16 @@ const Cart = () => {
             const res = await axios.post("http://localhost:3000/order", orderData, {
                 withCredentials: true
             });
-            
+            const newOrder = res.data;
             if (res.status === 200) {
                 alert("Order placed successfully!");
-            
+                dispatch(addOrder(newOrder));
                 dispatch(setCart({}));
             }
+            localStorage.setItem("latestOrder", JSON.stringify(res.data));
         } catch (err) {
             console.error("Error placing order:", err);
             alert("Failed to place order");
-=======
-  useEffect(() => {
-    let mounted = true;
-    const fetchCart = async () => {
-      try {
-        const res = await axios.get("http://localhost:3000/getCart", { withCredentials: true });
-        if (!mounted) return;
-        
-        if (Array.isArray(res.data.cart)) {
-          dispatch(setCart(arrayToCartObject(res.data.cart)));
-        } else if (res.data.cart && typeof res.data.cart === "object") {
-          dispatch(setCart(res.data.cart));
-        } else {
-          dispatch(setCart({}));
->>>>>>> 6d91d160d923a383ca88ec9503f4995b4a12887b
         }
     };
 

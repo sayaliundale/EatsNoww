@@ -24,7 +24,7 @@ const Counter = ({ id, itemData }) => {
   const [loading, setLoading] = useState(false);
 
   const changeQty = async (actionType) => {
-    if (loading) return; 
+    if (loading) return;
     setLoading(true);
     try {
       const payloadItem = {
@@ -55,9 +55,10 @@ const Counter = ({ id, itemData }) => {
 
   return (
     <div className="flex justify-evenly gap-4 px-4">
-      <button onClick={() => changeQty("increment")} disabled={loading}>+</button>
-      <span>{itemData.quantity ?? 0}</span>
+
       <button onClick={() => changeQty("decrement")} disabled={loading}>-</button>
+      <span>{itemData.quantity ?? 0}</span>
+      <button onClick={() => changeQty("increment")} disabled={loading}>+</button>
 
     </div>
   );

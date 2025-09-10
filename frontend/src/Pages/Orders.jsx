@@ -1,25 +1,49 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { io } from "socket.io-client";
+import socket from "../utils/Socket";
+import Order from "./Order";
 
 const Orders = () => {
     const [orders, setOrders] = useState([]);
     const user = JSON.parse(localStorage.getItem("user"));
-    const userId = user._id
+    const userId = user?._id;
 
     useEffect(() => {
         if (!userId) return;
 
-        axios.get(`http://localhost:3000/getOrder/${userId}`, { withCredentials: true })
-            .then(res => setOrders(res.data))
-            .catch(err => console.error(err));
+        const fetchOrders = async () => {
+            try {
+                const res = await axios.get(
+                    `http://localhost:3000/getOrder/${userId}`,
+                    { withCredentials: true }
+                );
+                setOrders(res.data);
+            } catch (err) {
+                console.error("Error fetching orders:", err);
+            }
+        };
+        fetchOrders();
 
-        const socket = io("http://localhost:3000", { withCredentials: true });
-        socket.emit("joinOrdersRoom", userId);
+        if (socket.connected) {
+            socket.emit("joinOrdersRoom", userId);
+        } else {
+            socket.on("connect", () => {
+                socket.emit("joinOrdersRoom", userId);
+            });
+        }
 
-        socket.on("orderUpdate", (updated) => {
-            setOrders(prev => {
-                const index = prev.findIndex(order => order._id === updated._id);
+        const handleNewOrder = (newOrder) => {
+           
+            setOrders((prev) => {
+                if (prev.some((o) => o._id === newOrder._id)) return prev;
+                return [newOrder, ...prev];
+            });
+        };
+        socket.on("orderPlaced", handleNewOrder);
+
+        const handleUpdate = (updated) => {
+            setOrders((prev) => {
+                const index = prev.findIndex((o) => o._id === updated._id);
                 if (index !== -1) {
                     const copy = [...prev];
                     copy[index] = updated;
@@ -27,10 +51,23 @@ const Orders = () => {
                 }
                 return [updated, ...prev];
             });
-        });
+        };
+        socket.on("orderUpdate", handleUpdate);
 
-        return () => socket.disconnect();
-    }, []);
+        return () => {
+            socket.off("orderPlaced", handleNewOrder);
+            socket.off("orderUpdate", handleUpdate);
+        };
+    }, [userId]);
+
+    const pendingOrders = orders.filter(
+        (o) => o.status?.toLowerCase() === "pending");
+
+    const activeOrders = orders.filter((o) =>
+        ["preparing", "out of delivery"].includes(o.status?.toLowerCase()));
+
+    const completedOrders = orders.filter((o) =>
+        ["delivered", "cancelled"].includes(o.status?.toLowerCase()));
 
     return (
         <div className="max-w-3xl mx-auto p-6 space-y-6">
@@ -42,46 +79,33 @@ const Orders = () => {
                 </div>
             )}
 
-            {orders.map(order => (
-                <div key={order._id}
-                    className="bg-white shadow-lg rounded-2xl p-5 border border-gray-100 hover:shadow-xl transition-all duration-200">
+            {pendingOrders.length > 0 && (
+                <>
+                    <h3 className="text-xl font-semibold text-yellow-600">🕒 Placed</h3>
+                    {pendingOrders.map((order) => (
+                        <Order key={order._id} order={order} />
+                    ))}
+                </>
+            )}
 
-                    <div className="flex justify-between items-center mb-4">
-                        <span
-                            className={`px-3 py-1 rounded-full text-sm font-medium ${order.status === "Delivered"
-                                    ? "bg-green-100 text-green-700"
-                                    : order.status === "Out for Delivery"
-                                        ? "bg-yellow-100 text-yellow-700"
-                                        : "bg-gray-100 text-gray-700"
-                                }`}>
-                            {order.status}
-                        </span>
-                        <span className="text-sm text-gray-500">
-                            Order ID: {order._id.slice(-6).toUpperCase()}
-                        </span>
-                    </div>
+            {activeOrders.length > 0 && (
+                <>
+                    <h3 className="text-xl font-semibold text-blue-600">🚚 Out of Delivery</h3>
+                    {activeOrders.map((order) => (
+                        <Order key={order._id} order={order} />
+                    ))}
+                </>
+            )}
 
-                    <div className="space-y-2">
-                        {order.items?.map((it, i) => (
-                            <div key={i} className="flex justify-between items-center">
-                                <span className="text-gray-800 font-medium">{it.name}</span>
-                                <span className="text-gray-600">
-                                    {it.quantity} × ₹{it.price}
-                                </span>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="border-t mt-4 pt-3 flex justify-between items-center">
-                        <span className="font-semibold text-gray-800">Total Price</span>
-                        <span className="text-lg font-bold text-green-600">
-                            ₹{order.totalPrice}
-                        </span>
-                    </div>
-                </div>
-            ))}
+            {completedOrders.length > 0 && (
+                <>
+                    <h3 className="text-xl font-semibold text-green-600">✅ Completed</h3>
+                    {completedOrders.map((order) => (
+                        <Order key={order._id} order={order} />
+                    ))}
+                </>
+            )}
         </div>
-
     );
 };
 

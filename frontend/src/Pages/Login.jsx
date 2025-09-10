@@ -30,7 +30,13 @@ const Login = () => {
 
       localStorage.setItem("user", JSON.stringify(res.data.user));
       dispatch(setUser(res.data.user));
-      navigate("/")
+
+      if(res.data.user.role =="admin"){
+        navigate("/admin")
+      }else{
+        navigate("/")
+      }
+      
       alert("Login successful!");
     }
     catch (err) {
@@ -87,7 +93,8 @@ const Login = () => {
           <p className="font-medium text-orange-700">
             Test Credentials:
           </p>
-          <p>Email: <span className="font-mono">test@gmail.com</span></p>
+          <p> User Email: <span className="font-mono">test@gmail.com</span></p>
+          <p> Admin Email: <span className="font-mono">admin@gmail.com</span></p>
           <p>Password: <span className="font-mono">123456</span></p>
         </div>
       </div>

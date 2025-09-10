@@ -15,25 +15,50 @@ const AdminPanel = () => {
             setOrders(res.data);
         }
         fetchOrder();
+
+        socket.on("newOrder", (order) => {
+            setOrders(prevOrders => [order, ...prevOrders]); 
+            setMsg(`New order received from ${order.customerName}`);
+        });
+
+        socket.on("orderUpdated", (updatedOrder) => {
+            setOrders(prevOrders =>
+                prevOrders.map(o =>
+                    o._id === updatedOrder._id ? updatedOrder : o
+                )
+            );
+            setMsg(`Order ${updatedOrder._id} updated to "${updatedOrder.status}"`);
+        });
+
+        return () => {
+            socket.off("newOrder");
+            socket.off("orderUpdated");
+        };
+    
     }, []);
 
     const updateOrderStatus = async (orderId, newStatus) => {
-
-        console.log("Updating order:", orderId, newStatus);
+        
+        setOrders(prevOrders =>
+            prevOrders.map(o =>
+                o._id === orderId ? { ...o, status: newStatus } : o
+            )
+        );
+    
         try {
-            console.log("hii")
-            const res = await axios.put(`http://localhost:3000/updateStatus/${orderId}`,
-                { status: newStatus }, { withCredentials: true });
-
+            const res = await axios.put(
+                `http://localhost:3000/updateStatus/${orderId}`,
+                { status: newStatus },
+                { withCredentials: true }
+            );
+    
             setMsg(`Order ${orderId} status updated to "${res.data.status}"`);
-            console.log("Message set:", `Order ${orderId} status updated to "${res.data.status}"`);
-
         } catch (err) {
             setMsg(`Failed to update order ${orderId} status.`);
-
         }
     };
-    const allowedFlow = ["Pending", "Preparing", "Out of Delivery", "Delivered", "Cancelled"];
+    
+    const allowedFlow = ["Preparing", "Out of Delivery", "Delivered", "Cancelled"];
 
     return (
         <>

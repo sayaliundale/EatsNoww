@@ -7,7 +7,7 @@ const signup = async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = new User({
-            name, email, password: hashedPassword,
+            name, email, password: hashedPassword, role: "user"
         })
         await user.save();
         res.status(200).send("User created!")
@@ -33,7 +33,7 @@ const login = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { _id: user._id },
+            { _id: user._id, role: user.role },
             process.env.JWT_SECRET,
             { expiresIn: "1d" }
         )
@@ -49,6 +49,7 @@ const login = async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            role: user.role
         },})
     }
     catch (err) {

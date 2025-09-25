@@ -37,7 +37,6 @@ const RestaurantMenu = () => {
                 const cartItems = response.data.cart;
                 if (Array.isArray(cartItems)) {
                     const allMenuItems = menu.flatMap(category => category.items);
-    
                     
                 }
             } catch (error) {
@@ -49,19 +48,16 @@ const RestaurantMenu = () => {
     }, [menu]);
     
     const { name, del_time, rating, cusines, veg } = restaurtInfo;
-
+  
     return (
         <>
             <div className="flex flex-col items-center ">
-                <div className="w-[55%] mt-[5%]">
-                    <p className="text-3xl font-bold">{name}</p>
-                    <div className="flex flex-col gap-2 mt-4 border-[2px] border-gray-300 rounded-2xl px-8 py-4 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
+                <div className="w-[70%] sm:w-[60%] lg:w-[55%] mt-[5%]">
+                    <p className="text-2xl md:text-3xl font-bold">{name}</p>
+                    <div className="flex flex-col gap-2 mt-4 border-[2px] text-[0.9rem] sm:text-[1rem] border-gray-300 rounded-2xl px-8 py-4 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
 
-                        <div className="flex flex-wrap gap-2 text-gray-700 ">⭐ {rating} ratings
-
-                            <img
-                                src={veg ? "/veg.png" : "/non-veg.png"}
-                                alt={veg ? "Veg" : "Non-Veg"}
+                        <div className="flex flex-wrap gap-2 text-gray-700 ">⭐ {rating} ratings   
+                        <img src={veg ? "/veg.png" : "/non-veg.png"} alt={veg ? "Veg" : "Non-Veg"}
                                 className="w-4 h-4 mt-[3px] ml-6" />
 
                             <span className="">{veg ? "Veg" : "Non-Veg"}</span>

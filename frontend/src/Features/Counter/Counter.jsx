@@ -54,7 +54,7 @@ const Counter = ({ id, itemData }) => {
   };
 
   return (
-    <div className="flex justify-evenly gap-4 px-4">
+    <div className="flex justify-evenly gap-2 px-2 text-[0.9rem] sm:px-3 sm:text-[1rem] sm:gap-3 md:px-4 ">
 
       <button onClick={() => changeQty("decrement")} disabled={loading}>-</button>
       <span>{itemData.quantity ?? 0}</span>

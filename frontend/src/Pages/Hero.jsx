@@ -14,17 +14,18 @@ const Hero = () => {
                     <div className="flex flex-wrap items-center justify-center px-12 py-16 gap-8 lg:gap-8">
 
                         <div className="text-gray-800 max-w-xl space-y-4 font-extralight">
-                            <p className="text-5xl lg:text-6xl tracking-tight">
+                            <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight">
                                 Life's too short
                             </p>
-                            <p className="text-5xl lg:text-6xl  tracking-tight">
+                            <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl  tracking-tight">
                                 to cook, <span className="text-orange-500 ">let's eat!</span>
                             </p>
-                            <p className="text-xl text-gray-600 font-light">
+                            <p className="text-[1rem] sm:text-[1.1rem] md:text-xl text-gray-600 font-light">
                                 Order now and conquer your cravings
                             </p>
 
-                            <button className="mt-4 px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition" onClick ={handleClick}>
+                            <button className="mt-4 px-4 py-2 text-sm bg-orange-500 text-white rounded 
+                            sm:px-6 sm:py-2 sm:text-base" onClick ={handleClick}>
                                 Order Now
                             </button>
                           
@@ -37,7 +38,6 @@ const Hero = () => {
                             />
                         </div>
                     </div>
-
 
                 </div>
             </div>

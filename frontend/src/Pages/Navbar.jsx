@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { totalQuantity, setCart } from "../Features/Counter/CounterSlice";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { logoutUser } from "../Features/UserSlice";
 
 const Navbar = () => {
@@ -10,6 +10,7 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const quantity = useSelector(totalQuantity);
     const user = JSON.parse(localStorage.getItem('user'));
+    const [isOpen, setOpen] = useState(false);
     console.log("Localstorage - ", user);
 
     useEffect(() => {
@@ -40,6 +41,10 @@ const Navbar = () => {
         fetchCart();
     }, [dispatch]);
 
+    const handleToggle = () => {
+        setOpen(!isOpen);
+    }
+
     const handleClick = () => {
         navigate("/cart");
     };
@@ -49,43 +54,54 @@ const Navbar = () => {
         localStorage.removeItem("user");
         localStorage.removeItem("token");
         navigate("/login");
-
     }
 
     return (
-        <div className="shadow-md">
-            <div className="flex flex-col md:flex-row items-center justify-between px-[10%] py-3">
-                <div className="flex flex-col w-[45%] md:flex-row items-center gap-8">
-                    <img className="h-14 w-24" src="/Logo.png" alt="Logo" />
+        <div className="relative shadow-md">
+            <div className="flex justify-between items-center md:px-[10%] py-3 px-4 gap-3 md:gap-6">
 
-                    <ul className="flex flex-col w-[60%] mt-4 md:flex-row gap-8 text-[1.1rem] justify-center text-neutral-600 tracking-wide">
-                        <Link to="/" className="cursor-pointer hover:underline"> Home</Link>
+                <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-2">
+                        <img className="h-5 w-6 mt-5 sm:hidden cursor-pointer" src="/burger-bar.png"
+                            alt="menu" onClick={handleToggle} />
+                        <img className="h-10 w-22 md:h-14 md:25" src="/Logo.png" alt="Logo" />
+                    </div>
+                
+                    {isOpen &&
+                        <div className="absolute top-full left-0 w-full bg-white shadow-md sm:hidden">
+                            <ul className="flex flex-col gap-6 px-6 py-4 text-[1.1rem] text-neutral-600 tracking-wide">
+                                <Link to="/" className="cursor-pointer hover:underline">Home</Link>
+                                <li className="cursor-pointer hover:underline">About us</li>
+                                <li className="cursor-pointer hover:underline">Contact us</li>
+                            </ul>
+                        </div>}
+
+                    <ul className="hidden sm:flex mt-4 gap-8 text-[1.1rem] justify-center text-neutral-600 tracking-wide">
+                        <Link to="/" className="cursor-pointer hover:underline">Home</Link>
                         <li className="cursor-pointer hover:underline">About us</li>
                         <li className="cursor-pointer hover:underline">Contact us</li>
                     </ul>
                 </div>
 
-                <div className="flex items-center gap-8 mt-3 md:mt-0">
-                    <div className="flex flex-col relative">
-                        <img
-                            className="h-10 cursor-pointer"
-                            src="/paper-bag.png"
-                            alt="Cart"
-                            onClick={handleClick}
-                        />
-                        <span className="absolute -top-2 -right-2 h-6 w-6 text-center rounded-full bg-lime-400 text-black font-semibold">
+                <div className="flex items-center gap-6">
+                    <div className="relative">
+                        <img className="h-8 sm:h-11 cursor-pointer" src="/paper-bag.png"
+                            alt="Cart" onClick={handleClick} />
+                        <span className="absolute -top-2 -right-2 h-5 w-5 text-[0.8rem] sm:h-6 sm:w-6 flex items-center justify-center rounded-full bg-lime-400 text-black font-semibold">
                             {quantity}
                         </span>
                     </div>
 
-                    <div className="relative group flex gap-2 items-center text-neutral-600 tracking-wide text-[1.1rem] mt-2">
-                        <img className="w-8" src="/user.png" alt="user" />
-                        <p className="">{user.name}</p>
+                    <div className="relative group flex gap-2 items-center mt-2 text-neutral-600 tracking-wide text-[1.1rem]">
+                        <img className="w-6 sm:w-8" src="/user.png" alt="user" />
+                        <p className="text-[1rem] xl:text-[1.1rem] ">{user.name}</p>
 
-                        <div className="absolute hidden group-hover:block bg-white shadow-md hover:shadow-xl transition-all duration-300 rounded mt-30 w-40 z-50">
+                        <div className="absolute hidden group-hover:block bg-white shadow-md hover:shadow-xl transition-all duration-300 rounded mt-10 w-40 z-50">
                             <ul className="py-2">
-                                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={()=> navigate("/order")}>Orders</li>
-                                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={handleLogout}>Logout</li>
+                                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                                    onClick={() => navigate("/order")} > Orders </li>
+                                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                                    onClick={handleLogout}> Logout</li>
                             </ul>
                         </div>
                     </div>

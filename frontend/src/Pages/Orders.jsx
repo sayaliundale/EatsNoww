@@ -24,16 +24,11 @@ const Orders = () => {
         };
         fetchOrders();
 
-        if (socket.connected) {
-            socket.emit("joinOrdersRoom", userId);
-        } else {
-            socket.on("connect", () => {
-                socket.emit("joinOrdersRoom", userId);
-            });
-        }
+        const joinRoom = () => socket.emit("joinOrdersRoom", userId);
+        if (socket.connected) joinRoom();
+        socket.on("connect", joinRoom);
 
         const handleNewOrder = (newOrder) => {
-           
             setOrders((prev) => {
                 if (prev.some((o) => o._id === newOrder._id)) return prev;
                 return [newOrder, ...prev];
@@ -45,33 +40,43 @@ const Orders = () => {
             setOrders((prev) => {
                 const index = prev.findIndex((o) => o._id === updated._id);
                 if (index !== -1) {
-                    const copy = [...prev];
-                    copy[index] = updated;
-                    return copy;
+                    if (prev[index].status !== updated.status) {
+                        const copy = [...prev];
+                        copy[index] = { ...copy[index], ...updated };
+                        console.log("Order updated:", updated); 
+                        return copy;
+                    }
+                    return prev; 
                 }
-                return [updated, ...prev];
+                return [updated, ...prev]; 
             });
         };
         socket.on("orderUpdate", handleUpdate);
 
         return () => {
+            socket.off("connect", joinRoom);
             socket.off("orderPlaced", handleNewOrder);
             socket.off("orderUpdate", handleUpdate);
         };
     }, [userId]);
 
     const pendingOrders = orders.filter(
-        (o) => o.status?.toLowerCase() === "pending");
+        (o) => o.status?.toLowerCase() === "pending"
+    );
 
     const activeOrders = orders.filter((o) =>
-        ["preparing", "out of delivery"].includes(o.status?.toLowerCase()));
+        ["preparing", "out of delivery"].includes(o.status?.toLowerCase()) // ✅ no "pending" here
+    );
 
     const completedOrders = orders.filter((o) =>
-        ["delivered", "cancelled"].includes(o.status?.toLowerCase()));
+        ["delivered", "cancelled"].includes(o.status?.toLowerCase())
+    );
 
     return (
         <div className="max-w-3xl mx-auto p-6 space-y-6">
-            <h2 className="text-2xl font-bold text-gray-800">🍽 Your Orders</h2>
+            <p className="text-[1rem] md:text-2xl font-bold text-gray-800">
+                🍽 Your Orders
+            </p>
 
             {orders.length === 0 && (
                 <div className="text-center py-10 text-gray-500">
@@ -90,7 +95,7 @@ const Orders = () => {
 
             {activeOrders.length > 0 && (
                 <>
-                    <h3 className="text-xl font-semibold text-blue-600">🚚 Out of Delivery</h3>
+                    <h3 className="text-xl font-semibold text-blue-600">🚚 Active</h3>
                     {activeOrders.map((order) => (
                         <Order key={order._id} order={order} />
                     ))}

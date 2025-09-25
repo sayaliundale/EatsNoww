@@ -3,6 +3,7 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const { socketAuth } = require("./middlewares/socketAuth");
+const { startOrderCron } = require("./cron/orderDelivery");
 const app = express();
 
 const cookieParser = require("cookie-parser");
@@ -41,6 +42,8 @@ io.on("connection", (socket) => {
         console.log("User disconnected:", socket.id);
     });
 });
+
+startOrderCron(io);
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => console.log(`---- \nServer started on port ${PORT}\n-----`));

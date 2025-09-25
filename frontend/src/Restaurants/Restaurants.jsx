@@ -3,6 +3,7 @@ import axios from "axios";
 import RestaurantCard from "./RestaurantCard";
 import { useNavigate } from "react-router-dom";
 import Filters from "../Features/Filter/Filters";
+import RestaurantShimmer from "./Shimmer/RestaurantShimmer";
 
 const Restaurants = () => {
 
@@ -10,6 +11,7 @@ const Restaurants = () => {
     const [filteredData, setFilteredData] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [currentFilter, setCurrentFilter] = useState("all");
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -22,6 +24,8 @@ const Restaurants = () => {
 
             } catch (error) {
                 console.error("Error fetching restaurant data:", error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -75,7 +79,6 @@ const Restaurants = () => {
     };
 
     return (
-
         <>
             <Filters
                 onFilterChange={handleFilterChange}
@@ -83,15 +86,19 @@ const Restaurants = () => {
                 setSearchTerm={setSearchTerm}
                 currentFilter={currentFilter}
             />
-            <div className="flex flex-wrap gap-10 justify-center" >
-                {filteredData.map((item, index) => (
-                    <RestaurantCard
-                        key={item.res_id}
-                        restaurant={item}
-                        onClick={() => handleClick(item.res_id)}
-                    />
-                ))}
-            </div>
+             <div className="flex flex-wrap gap-10 justify-center">
+            {loading
+                ? Array.from({ length: restaurantData.length ||9 }).map((item, i) => (
+                      <RestaurantShimmer key={i} />
+                  ))
+                : filteredData.map((item) => (
+                      <RestaurantCard
+                          key={item.res_id}
+                          restaurant={item}
+                          onClick={() => handleClick(item.res_id)}
+                      />
+                  ))}
+        </div>
         </>
     );
 };

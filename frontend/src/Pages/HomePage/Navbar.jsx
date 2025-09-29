@@ -1,9 +1,10 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
-import { totalQuantity, setCart } from "../Features/Counter/CounterSlice";
+import { totalQuantity, setCart } from "../../Features/Counter/CounterSlice";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { logoutUser } from "../Features/UserSlice";
+import { logoutUser } from "../../Features/UserSlice";
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -53,6 +54,7 @@ const Navbar = () => {
         dispatch(logoutUser());
         localStorage.removeItem("user");
         localStorage.removeItem("token");
+        toast.success("Logged out sucessful!", {position : "top-center"});
         navigate("/login");
     }
 
@@ -66,7 +68,7 @@ const Navbar = () => {
                             alt="menu" onClick={handleToggle} />
                         <img className="h-10 w-22 md:h-14 md:25" src="/Logo.png" alt="Logo" />
                     </div>
-                
+
                     {isOpen &&
                         <div className="absolute top-full left-0 w-full bg-white shadow-md sm:hidden">
                             <ul className="flex flex-col gap-6 px-6 py-4 text-[1.1rem] text-neutral-600 tracking-wide">

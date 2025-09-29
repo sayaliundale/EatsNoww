@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
+import { toast } from 'react-toastify';
 
 const Order = ({ order }) => {
-    
+
     const getInitialTime = () => {
         if (order.status === "Delivered") return 0;
         if (order.status === "Out of Delivery") return 1;
-        return 3; 
+        return 3;
     };
-  
     const [time, setTime] = useState(getInitialTime);
     const [status, setStatus] = useState(order.status || "Pending");
   
@@ -20,7 +20,9 @@ const Order = ({ order }) => {
   
             if (newTime <= 0) {
                 clearInterval(interval);
+                console.log("Delivered ✅ Removing from localStorage");
                 setStatus("Delivered");
+                localStorage.removeItem("latestOrder");
                 return 0;
             }
   
@@ -35,7 +37,7 @@ const Order = ({ order }) => {
     }, 60000); 
   
     return () => clearInterval(interval);
-    }, []); 
+    }, [status, time]); 
 
     return (
         <>

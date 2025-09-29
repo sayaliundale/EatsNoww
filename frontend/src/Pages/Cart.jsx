@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"
 import { setCart } from "../Features/Counter/CounterSlice";
 import Counter from "../Features/Counter/Counter";
 import { addOrder } from "../Features/OrderSLice";
+import { toast } from 'react-toastify';
 
 const arrayToCartObject = (arr) => {
     const obj = {};
@@ -24,6 +26,7 @@ const arrayToCartObject = (arr) => {
 
 const Cart = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const userId = useSelector((state) => state.user._id);
     const cartObject = useSelector((state) => state.counter.value);
     const cartItems = useMemo(() => Object.entries(cartObject), [cartObject]);
@@ -81,21 +84,9 @@ const Cart = () => {
             
         };
 
-        try {
-            const res = await axios.post("http://localhost:3000/order", orderData, {
-                withCredentials: true
-            });
-            const newOrder = res.data;
-            if (res.status === 200) {
-                alert("Order placed successfully!");
-                dispatch(addOrder(newOrder));
-                dispatch(setCart({}));
-            }
-            localStorage.setItem("latestOrder", JSON.stringify(res.data));
-        } catch (err) {
-            console.error("Error placing order:", err);
-            alert("Failed to place order");
-        }
+        localStorage.setItem("latestOrder", JSON.stringify(orderData));
+        toast.success("Redirecting to the Payment", {position: "top-right"});
+        navigate("/Payment")
     };
 
     return (

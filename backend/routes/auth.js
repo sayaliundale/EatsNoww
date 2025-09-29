@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const create_payment = require('../controllers/razorpay');
 const user = require("../controllers/authentication");
 const verify = require("../middlewares/auth");
 const data = require("../controllers/restaurants");
@@ -22,7 +22,7 @@ router.post("/order", orderHandler.order);
 router.get("/getCart", verify, getCartController.getCart);
 router.get("/getOrders", orderHandler.getOrders);
 router.put("/updateStatus/:_id", orderHandler.orderStatus);
-
+router.post("/create-payment", create_payment);
 router.post("/admin", isAdmin, (req, res) => {
   res.json({ message: "Verified admin" });
 });

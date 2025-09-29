@@ -17,7 +17,7 @@ const MenuCard = ({ data }) => {
                 return (
                     <div key={index}
                         className="flex justify-between items-start gap-4 py-4 border-b border-gray-300 md:px-10">
-                        <div className=" w-[80%] md:w-[70%]">
+                        <div className="w-[80%] md:w-[70%]">
                             <p className="text-lg font-semibold text-gray-900">{card?.name}</p>
                             {card?.description && (
                                 <p className="text-[0.8rem] md:text-[1rem] text-gray-600 mt-1">{card?.description}</p>

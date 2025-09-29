@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import socket from "../utils/Socket";
+import socket from "../../utils/Socket";
 import Order from "./Order";
 
 const Orders = () => {
@@ -13,10 +13,8 @@ const Orders = () => {
 
         const fetchOrders = async () => {
             try {
-                const res = await axios.get(
-                    `http://localhost:3000/getOrder/${userId}`,
-                    { withCredentials: true }
-                );
+                const res = await axios.get(`http://localhost:3000/getOrder/${userId}`,
+                    { withCredentials: true });
                 setOrders(res.data);
             } catch (err) {
                 console.error("Error fetching orders:", err);
@@ -43,12 +41,12 @@ const Orders = () => {
                     if (prev[index].status !== updated.status) {
                         const copy = [...prev];
                         copy[index] = { ...copy[index], ...updated };
-                        console.log("Order updated:", updated); 
+                        console.log("Order updated:", updated);
                         return copy;
                     }
-                    return prev; 
+                    return prev;
                 }
-                return [updated, ...prev]; 
+                return [updated, ...prev];
             });
         };
         socket.on("orderUpdate", handleUpdate);
@@ -65,7 +63,7 @@ const Orders = () => {
     );
 
     const activeOrders = orders.filter((o) =>
-        ["preparing", "out of delivery"].includes(o.status?.toLowerCase()) // ✅ no "pending" here
+        ["preparing", "out of delivery"].includes(o.status?.toLowerCase()) 
     );
 
     const completedOrders = orders.filter((o) =>

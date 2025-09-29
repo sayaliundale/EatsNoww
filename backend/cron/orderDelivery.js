@@ -4,7 +4,6 @@ const Order = require("../models/order");
 function startOrderCron(io) {
     cron.schedule("* * * * *", async () => {
         const now = new Date();
-        console.log("Cron running at:", new Date());
 
         const orders = await Order.find({ status: { $in: ["Pending", "Out of Delivery"] } });
 

@@ -33,6 +33,12 @@ const order = new mongoose.Schema({
         type: Date, 
         default: Date.now 
     },
+    payment: {
+        paymentId: { type: String },
+        method :{type: String}, 
+        orderId: { type: String },        
+        status: { type: String, default: 'pending' }
+    },
 
 })
 

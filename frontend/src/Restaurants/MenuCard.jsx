@@ -1,5 +1,6 @@
 import Counter from "../Features/Counter/Counter";
 import { useSelector } from "react-redux";
+import { lazy } from "react";
 
 const MenuCard = ({ data }) => {
     const userId = useSelector((state) => state.user._id);
@@ -27,7 +28,8 @@ const MenuCard = ({ data }) => {
 
                         <div className="relative w-[8rem] h-[5rem] md:w-[10rem] md:h-[7rem] rounded-lg mb-4">
                             {card?.img && (
-                                <img src={card.img} alt={card.name} className="w-full h-full object-cover rounded-md"/>)}
+                                <img src={card.img} alt={card.name} className="w-full h-full object-cover rounded-md"
+                                    loading="lazy"/>)}
 
                             {card?.id && (
                                 <div className="absolute top-[85%] ml-[10%] w-[75%] h-[45%] md:w-[60%] md:ml-[20%] md:h-[35%] lg:top-[80%] 

@@ -9,9 +9,9 @@ import socket from './utils/Socket.js'
 socket.connect();
 createRoot(document.getElementById('root')).render(
   
-    <StrictMode>
+    <>
         <Provider store={store} >
         <App />
     </Provider>
-    </StrictMode>,
+    </>,
 )

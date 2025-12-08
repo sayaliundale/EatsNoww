@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom"
+import FoodDelivery from "../../assests/Food_Delivery.png"
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const Hero = () => {
     const navigate = useNavigate();
@@ -32,10 +34,7 @@ const Hero = () => {
                         </div>
 
                         <div className="mt-6 md:mt-0 md:ml-10">
-                            <img
-                                src="/Food_Delivery.png"
-                                alt="Food delivery" 
-                            />
+                            <LazyLoadImage src={FoodDelivery}  alt="Food delivery" />     
                         </div>
                     </div>
 

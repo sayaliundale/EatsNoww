@@ -1,27 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, Suspense, lazy } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import RestaurantCard from "./RestaurantCard";
 import { useNavigate } from "react-router-dom";
 import Filters from "../Features/Filter/Filters";
 import RestaurantShimmer from "./Shimmer/RestaurantShimmer";
+import { setRestaurants } from "../Features/RestaurantSlice";
+
+const RestaurantCard = lazy(() => import("./RestaurantCard"));
 
 const Restaurants = () => {
 
-    const [restaurantData, setRestaurantData] = useState([]);
-    const [filteredData, setFilteredData] = useState([]);
+    const restaurantData = useSelector(state => state.restaurant?.data || []);
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
     const [currentFilter, setCurrentFilter] = useState("all");
-    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
+        if (restaurantData.length > 0) {
+            setLoading(false);
+            return;
+        }
+
         const fetchData = async () => {
             try {
                 const response = await axios.get("http://localhost:3000/restaurant");
-                console.log("rest-", response.data);
-                setRestaurantData(response.data);
-                setFilteredData(response.data);
-
+                dispatch(setRestaurants(response.data));
             } catch (error) {
                 console.error("Error fetching restaurant data:", error);
             } finally {
@@ -30,49 +35,34 @@ const Restaurants = () => {
         };
 
         fetchData();
-    }, []);
+    }, [restaurantData, dispatch]);
 
-    useEffect(() => {
-        handleFilterChange(currentFilter);
-    }, [searchTerm]);
+    const filteredData = useMemo(() => {
+        let data = restaurantData;
 
-    const handleFilterChange = (filterType) => {
-        if (currentFilter === filterType) {
-            setCurrentFilter("");
-            let newData = [...restaurantData];
-
-            if (searchTerm.trim() !== "") {
-                newData = newData.filter((res) =>
-                    res.name.toLowerCase().includes(searchTerm.toLowerCase())
-                );
-            }
-
-            setFilteredData(newData);
-            return;
-        }
-
-        setCurrentFilter(filterType);
-        let newData = [...restaurantData];
-        if (filterType === "veg") {
-            newData = restaurantData.filter((res) => res.veg);
-        }
-        else if (filterType === "non-veg") {
-            newData = restaurantData.filter((res) => !res.veg);
-        }
-        else if (filterType === "rating") {
-            newData = restaurantData.filter((res) => res.rating >= 4)
-        }
-        else if (filterType === "maharashtrian") {
-            newData = restaurantData.filter((res) => res.cusines.includes("Maharashtrian"));
+        if (currentFilter === "veg") {
+            data = data.filter(res => res.veg);
+        } else if (currentFilter === "non-veg") {
+            data = data.filter(res => !res.veg);
+        } else if (currentFilter === "rating") {
+            data = data.filter(res => res.rating >= 4);
+        } else if (currentFilter === "maharashtrian") {
+            data = data.filter(res => res.cusines?.includes("Maharashtrian"));
         }
 
         if (searchTerm.trim() !== "") {
-            newData = newData.filter((res) =>
+            data = data.filter(res =>
                 res.name.toLowerCase().includes(searchTerm.toLowerCase())
             );
         }
-        setFilteredData(newData);
+
+        return data;
+    }, [restaurantData, currentFilter, searchTerm]);
+
+    const handleFilterChange = (filterType) => {
+        setCurrentFilter(prev => (prev === filterType ? "all" : filterType));
     };
+
 
     const handleClick = (id) => {
         navigate(`/restaurant/${id}`);
@@ -84,21 +74,21 @@ const Restaurants = () => {
                 onFilterChange={handleFilterChange}
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
-                currentFilter={currentFilter}
-            />
-             <div className="flex flex-wrap gap-10 justify-center">
-            {loading
-                ? Array.from({ length: restaurantData.length ||9 }).map((item, i) => (
-                      <RestaurantShimmer key={i} />
-                  ))
-                : filteredData.map((item) => (
-                      <RestaurantCard
-                          key={item.res_id}
-                          restaurant={item}
-                          onClick={() => handleClick(item.res_id)}
-                      />
-                  ))}
-        </div>
+                currentFilter={currentFilter}/>
+                
+            <div className="flex flex-wrap gap-10 justify-center">
+            <Suspense fallback={<div>Loading...</div>}></Suspense>
+                {loading
+                    ? Array.from({ length: 9 }).map((_, i) => <RestaurantShimmer key={i} />)
+                    : filteredData.map((item) => (
+                        <RestaurantCard
+                            key={item.res_id}
+                            restaurant={item}
+                            onClick={() => handleClick(item.res_id)}
+                        />
+                    ))
+                }
+            </div>
         </>
     );
 };

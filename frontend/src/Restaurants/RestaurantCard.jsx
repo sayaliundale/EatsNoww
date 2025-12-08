@@ -1,4 +1,4 @@
-import React from "react";
+import React, {lazy} from "react";
 
 const RestaurantCard = (props) => {
 
@@ -7,7 +7,7 @@ const RestaurantCard = (props) => {
 
     return (
         <div className="w-[60%] sm:w-[40%] md:w-[25%] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border-gray-800 p-4 bg-white" onClick={onClick}>
-            <img src={res_img} alt={name} className="w-full h-48 object-cover rounded-lg"/>
+            <img src={res_img} alt={name} className="w-full h-48 object-cover rounded-lg" loading="lazy"/>
 
             <div className="mt-3 space-y-1">
                 <h2 className="text-[1.05rem] lg:text-xl font-semibold">{name}</h2>

@@ -1,3 +1,6 @@
+import Slider from "../../assests/settings-sliders.png"
+import Search from "../../assests/search.png"
+
 const Filters = ({ onFilterChange, searchTerm, setSearchTerm, currentFilter }) => {
     
     return (
@@ -6,7 +9,7 @@ const Filters = ({ onFilterChange, searchTerm, setSearchTerm, currentFilter }) =
             
                 <div className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-full hover:shadow-md cursor-pointer w-fit">
                     <span>Filters</span>
-                    <img src="/settings-sliders.png" alt="filter" className="w-4 h-4" />
+                    <img src={Slider} alt="filter" className="w-4 h-4" />
                 </div>
                 
                 <div className={`px-4 py-2 border border-gray-300 rounded-full hover:shadow-md cursor-pointer ${currentFilter === "veg" ? "bg-green-100" : ""}`} 
@@ -28,7 +31,7 @@ const Filters = ({ onFilterChange, searchTerm, setSearchTerm, currentFilter }) =
                             setSearchTerm(e.target.value);
                             onFilterChange(currentFilter);
                         }}/>
-                    <img className="w-5 h-5" src="/search.png" alt="img" />
+                    <img className="w-5 h-5" src={Search} alt="img" />
                 </div>
             </div>
 

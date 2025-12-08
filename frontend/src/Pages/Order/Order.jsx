@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { toast } from 'react-toastify';
+import { useState, useEffect, } from "react";
 
 const Order = ({ order }) => {
 
@@ -20,9 +19,7 @@ const Order = ({ order }) => {
   
             if (newTime <= 0) {
                 clearInterval(interval);
-                console.log("Delivered ✅ Removing from localStorage");
                 setStatus("Delivered");
-                localStorage.removeItem("latestOrder");
                 return 0;
             }
   

@@ -2,17 +2,25 @@ import { Link, useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { totalQuantity, setCart } from "../../Features/Counter/CounterSlice";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, lazy } from "react";
 import { logoutUser } from "../../Features/UserSlice";
 import { toast } from 'react-toastify';
+import Bag from "../../assests/paper-bag.png"
+import BurgarBar from "../../assests/burger-bar.png"
+import Logo from "../../assests/Logo.png"
+import User from "../../assests/user.png"
 
 const Navbar = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const quantity = useSelector(totalQuantity);
-    const user = JSON.parse(localStorage.getItem('user'));
     const [isOpen, setOpen] = useState(false);
-    console.log("Localstorage - ", user);
+
+    const user = useMemo(() => {
+        const storedUser = localStorage.getItem("user");
+        return storedUser ? JSON.parse(storedUser) : null;
+    }, []);
+
 
     useEffect(() => {
         const fetchCart = async () => {
@@ -64,9 +72,9 @@ const Navbar = () => {
 
                 <div className="flex items-center gap-6">
                     <div className="flex items-center gap-2">
-                        <img className="h-5 w-6 mt-5 sm:hidden cursor-pointer" src="/burger-bar.png"
-                            alt="menu" onClick={handleToggle} />
-                        <img className="h-10 w-22 md:h-14 md:25" src="/Logo.png" alt="Logo" />
+                        <img className="h-5 w-6 mt-5 sm:hidden cursor-pointer" src={BurgarBar}
+                            alt="menu" onClick={handleToggle} loading="lazy" />
+                        <img className="h-10 w-22 md:h-14 md:25" src={Logo} alt="Logo" loading="lazy" />
                     </div>
 
                     {isOpen &&
@@ -87,15 +95,15 @@ const Navbar = () => {
 
                 <div className="flex items-center gap-6">
                     <div className="relative">
-                        <img className="h-8 sm:h-11 cursor-pointer" src="/paper-bag.png"
-                            alt="Cart" onClick={handleClick} />
+                        <img className="h-8 sm:h-11 cursor-pointer" src={Bag} alt="Cart" onClick={handleClick} loading="lazy"/>
+                            
                         <span className="absolute -top-2 -right-2 h-5 w-5 text-[0.8rem] sm:h-6 sm:w-6 flex items-center justify-center rounded-full bg-lime-400 text-black font-semibold">
                             {quantity}
                         </span>
                     </div>
 
                     <div className="relative group flex gap-2 items-center mt-2 text-neutral-600 tracking-wide text-[1.1rem]">
-                        <img className="w-6 sm:w-8" src="/user.png" alt="user" />
+                        <img className="w-6 sm:w-8" src={User} alt="user" loading="lazy" />
                         <p className="text-[1rem] xl:text-[1.1rem] ">{user.name}</p>
 
                         <div className="absolute hidden group-hover:block bg-white shadow-md hover:shadow-xl transition-all duration-300 rounded mt-10 w-40 z-50">

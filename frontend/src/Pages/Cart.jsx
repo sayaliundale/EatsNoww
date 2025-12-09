@@ -4,7 +4,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux"
 import { setCart } from "../Features/Counter/CounterSlice";
 import Counter from "../Features/Counter/Counter";
-import { addOrder } from "../Features/OrderSLice";
+const API_URL = import.meta.env.VITE_API_URL;
 import { toast } from 'react-toastify';
 
 const arrayToCartObject = (arr) => {
@@ -42,7 +42,7 @@ const Cart = () => {
         let mounted = true;
         const fetchCart = async () => {
             try {
-                const res = await axios.get("http://localhost:3000/getCart", { withCredentials: true });
+                const res = await axios.get(`${API_URL}/getCart`, { withCredentials: true });
                 
                 if (!mounted) return;
                 

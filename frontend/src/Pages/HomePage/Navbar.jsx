@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { totalQuantity, setCart } from "../../Features/Counter/CounterSlice";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 import { useEffect, useState, useMemo, lazy } from "react";
 import { logoutUser } from "../../Features/UserSlice";
 import { toast } from 'react-toastify';
@@ -25,7 +26,7 @@ const Navbar = () => {
     useEffect(() => {
         const fetchCart = async () => {
             try {
-                const res = await axios.get("http://localhost:3000/getCart", {
+                const res = await axios.get(`${API_URL}/getCart`, {
                     withCredentials: true,
                 });
 

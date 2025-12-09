@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const PaymentPage = () => {
     const [paymentMethod, setPaymentMethod] = useState("online");
@@ -13,7 +14,7 @@ const PaymentPage = () => {
     const handlePayment = async () => {
         if (paymentMethod === "cod") {
             try {
-                await axios.post("http://localhost:3000/order", {
+                await axios.post(`${API_URL}/order`, {
                     userId: user._id,
                     items: cartItems.items,
                     totalPrice: cartItems.totalPrice,
@@ -33,7 +34,7 @@ const PaymentPage = () => {
         }
 
         try {
-            const { data: order } = await axios.post("http://localhost:3000/create-payment",
+            const { data: order } = await axios.post(`${API_URL}/create-payment`,
                 { amt: cartItems.totalPrice * 100, });
 
             const options = {
@@ -44,7 +45,7 @@ const PaymentPage = () => {
                 description: "Order Payment",
                 order_id: order.id,
                 handler: async function (response) {
-                    await axios.post("http://localhost:3000/order", {
+                    await axios.post(`${API_URL}/order`, {
                         userId: user._id, items: cartItems.items,
                         totalPrice: cartItems.totalPrice,
                         address: cartItems.address,

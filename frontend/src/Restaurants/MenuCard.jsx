@@ -1,6 +1,5 @@
 import Counter from "../Features/Counter/Counter";
 import { useSelector } from "react-redux";
-import { lazy } from "react";
 
 const MenuCard = ({ data }) => {
     const userId = useSelector((state) => state.user._id);

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 import { useDispatch } from "react-redux";
 import { setCart } from "./CounterSlice";
 
@@ -35,7 +36,7 @@ const Counter = ({ id, itemData }) => {
       };
 
       const res = await axios.post(
-        "http://localhost:3000/cartUpdate",
+        `${API_URL}/cartUpdate`,
         { item: payloadItem, action: actionType },
         { withCredentials: true }
       );

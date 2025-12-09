@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Register = () => {
 
@@ -18,7 +19,7 @@ const Register = () => {
         e.preventDefault();
 
         try {
-            await axios.post("http://localhost:3000/signup", formData, { withCredentials: true });
+            await axios.post(`${API_URL}/signup`, formData, { withCredentials: true });
             toast.success("User registered!", { position: "top-center" });
             navigate("/login");
         }

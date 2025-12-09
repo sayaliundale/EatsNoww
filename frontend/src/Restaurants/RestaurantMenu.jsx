@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom"
 import MenuCard from "./MenuCard"
 import { useEffect, useState } from "react";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 import { useDispatch } from "react-redux";
 import vegIcon from "../assests/veg.png";
 import nonVegIcon from "../assests/non-veg.png";
@@ -20,7 +21,7 @@ const RestaurantMenu = () => {
     useEffect(() => {
         const fetchMenu = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/restaurant/${id}`);
+                const response = await axios.get(`${API_URL}/restaurant/${id}`);
                 const { categories, ...rest } = response.data;
 
                 setMenu(categories);
@@ -39,7 +40,7 @@ const RestaurantMenu = () => {
         const fetchCart = async () => {
             try {
                 axios.defaults.withCredentials = true;
-                const response = await axios.get("http://localhost:3000/getCart");
+                const response = await axios.get(`{API_URL}/getCart`);
 
                 const cartItems = response.data.cart;
                 if (Array.isArray(cartItems)) {

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import socket from "../../utils/Socket";
 import Order from "./Order";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Orders = () => {
     const [orders, setOrders] = useState([]);
@@ -13,7 +14,7 @@ const Orders = () => {
 
         const fetchOrders = async () => {
             try {
-                const res = await axios.get(`http://localhost:3000/getOrder/${userId}`,
+                const res = await axios.get(`${API_URL}/getOrder/${userId}`,
                     { withCredentials: true });
                 setOrders(res.data);
             } catch (err) {

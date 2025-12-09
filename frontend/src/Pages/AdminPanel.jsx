@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import socket from "../utils/Socket";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const AdminPanel = () => {
 
@@ -10,7 +11,7 @@ const AdminPanel = () => {
     useEffect(() => {
 
         const fetchOrder = async () => {
-            const res = await axios.get("http://localhost:3000/getOrders");
+            const res = await axios.get(`${API_URL}/getOrders`);
             console.log(res.data);
             setOrders(res.data);
         }
@@ -47,7 +48,7 @@ const AdminPanel = () => {
     
         try {
             const res = await axios.put(
-                `http://localhost:3000/updateStatus/${orderId}`,
+                `${API_URL}/updateStatus/${orderId}`,
                 { status: newStatus },
                 { withCredentials: true }
             );

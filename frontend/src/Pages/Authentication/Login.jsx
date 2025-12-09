@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { setUser } from "../../Features/UserSlice";
 import { useDispatch } from "react-redux";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Login = () => {
 
@@ -19,7 +20,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post("http://localhost:3000/login", formData, { withCredentials: true });
+            const res = await axios.post(`${API_URL}/login`, formData, { withCredentials: true });
             localStorage.setItem("user", JSON.stringify(res.data.user));
             dispatch(setUser(res.data.user));
 

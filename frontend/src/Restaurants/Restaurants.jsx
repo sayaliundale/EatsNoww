@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo, Suspense, lazy } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 import { useNavigate } from "react-router-dom";
 import Filters from "../Features/Filter/Filters";
 import RestaurantShimmer from "./Shimmer/RestaurantShimmer";
@@ -25,7 +26,7 @@ const Restaurants = () => {
 
         const fetchData = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/restaurant");
+                const response = await axios.get(`${API_URL}/restaurant`);
                 dispatch(setRestaurants(response.data));
             } catch (error) {
                 console.error("Error fetching restaurant data:", error);

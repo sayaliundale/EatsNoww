@@ -11,7 +11,7 @@ const cors = require("cors")
 const server = http.createServer(app);
 
 const io = new Server(server,
-    { cors: { origin: "http://localhost:5173", credentials: true } });
+    { cors: { origin: "https://eats-noww.vercel.app", credentials: true } });
 
 io.use(socketAuth);
 app.set('io', io);

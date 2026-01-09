@@ -4,6 +4,20 @@ EatsNow is a modern Restaurant Discovery & Food Ordering App that allows users t
 
 This project was built to practice and demonstrate frontend development skills using React and Redux.
 
+Live Link: https://eats-noww.vercel.app/
+
+<img width="1586" height="788" alt="Screenshot (25)" src="https://github.com/user-attachments/assets/610fdf11-06f4-4bed-8e70-bcfedd176c78" />
+<img width="1583" height="764" alt="Screenshot (26)" src="https://github.com/user-attachments/assets/9ca6a7fc-b4eb-462b-a0bd-a95f231e6236" />
+<img width="1600" height="770" alt="Screenshot (27)" src="https://github.com/user-attachments/assets/b034f49f-c753-4855-b6c0-f0bb3dbcb89c" />
+<img width="1600" height="719" alt="Screenshot (28)" src="https://github.com/user-attachments/assets/7060627b-9125-4329-a005-d48194337782" />
+<img width="1600" height="763" alt="Screenshot (30)" src="https://github.com/user-attachments/assets/aac0a869-3b75-4bb4-a842-fd34307234df" />
+<img width="1600" height="766" alt="Screenshot (31)" src="https://github.com/user-attachments/assets/c81b5de7-df4d-4c34-9202-65201c7f0f66" />
+<img width="1600" height="765" alt="Screenshot (32)" src="https://github.com/user-attachments/assets/8dc1597e-4c38-4180-a936-379db50f3c1c" />
+
+
+
+
+
 ---
 
 ### 👤 User Features

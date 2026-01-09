@@ -1,12 +1,89 @@
-# React + Vite
+# 🍔 EatsNow – Restaurant Discovery & Food Ordering App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+EatsNow is a modern Restaurant Discovery & Food Ordering App that allows users to explore restaurants, search for food items, filter results, and place orders seamlessly.
 
-Currently, two official plugins are available:
+This project was built to practice and demonstrate frontend development skills using React and Redux.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+### 👤 User Features
+- 🔐 User Authentication (Login / Signup)
+- 🍽️ Browse Restaurants & Food Items
+- 🔍 Search Restaurants & Dishes
+- ⭐ Filter Restaurants by Rating
+- 🥗 Veg / Non-Veg Filters
+- 🛒 Cart Management
+- 📦 Place Orders
+- 📍 **Live Order Tracking**
+- 📱 Fully Responsive UI
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React.js
+- Tailwind CSS 
+- Redux (State Management)
+- React Router
+  
+
+### Backend
+- Node.js
+- Express.js
+
+### Database
+- MongoDB
+
+---
+
+## 📂 Project Structure
+## 📂 Project Structure
+
+```text
+EatsNowW/
+├── frontend/
+│   ├── src/
+│   │   ├── Features/        # Reusable UI features & components
+│   │   ├── Pages/           # Application pages (Home, Cart, Admin, etc.)
+│   │   ├── ReduxStore/      # Redux store, slices & reducers
+│   │   ├── Restaurants/    # Restaurant-related components & logic
+│   │   ├── Routes/          # Application routing
+│   │   ├── assets/          # Images & static files
+│   │   ├── utils/           # Helper functions, API calls
+│   │   ├── App.js
+│   │   └── App.css
+│   └── package.json
+│
+├── backend/
+│   ├── controllers/         # Business logic
+│   ├── models/              # MongoDB schemas
+│   ├── routes/              # REST API routes
+│   ├── middleware/          # Authentication & validations
+│   ├── config/              # Database & environment config
+│   └── server.js
+│
+├── README.md
+└── package.json
+```
+
+
+## ⚙️ Installation & Setup
+
+### Clone the repository
+```bash
+git clone https://github.com/your-username/EatsNow.git
+````
+
+Frontend Setup
+
+- cd frontend
+- npm install
+- npm start
+
+Backend Setup
+
+- cd backend
+- npm install
+- npm start

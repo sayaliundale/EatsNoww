@@ -39,4 +39,51 @@ This project was built to practice and demonstrate frontend development skills u
 ---
 
 ## 📂 Project Structure
+## 📂 Project Structure
 
+```text
+EatsNowW/
+├── frontend/
+│   ├── src/
+│   │   ├── Features/        # Reusable UI features & components
+│   │   ├── Pages/           # Application pages (Home, Cart, Admin, etc.)
+│   │   ├── ReduxStore/      # Redux store, slices & reducers
+│   │   ├── Restaurants/    # Restaurant-related components & logic
+│   │   ├── Routes/          # Application routing
+│   │   ├── assets/          # Images & static files
+│   │   ├── utils/           # Helper functions, API calls
+│   │   ├── App.js
+│   │   └── App.css
+│   └── package.json
+│
+├── backend/
+│   ├── controllers/         # Business logic
+│   ├── models/              # MongoDB schemas
+│   ├── routes/              # REST API routes
+│   ├── middleware/          # Authentication & validations
+│   ├── config/              # Database & environment config
+│   └── server.js
+│
+├── README.md
+└── package.json
+```
+
+
+## ⚙️ Installation & Setup
+
+### Clone the repository
+```bash
+git clone https://github.com/your-username/EatsNow.git
+````
+
+Frontend Setup
+
+- cd frontend
+- npm install
+- npm start
+
+Backend Setup
+
+- cd backend
+- npm install
+- npm start
